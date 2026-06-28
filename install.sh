@@ -20,7 +20,7 @@ fi
 ok "Homebrew found"
 
 step "Installing brew tools"
-brew install neovim git gh fzf ripgrep fd bat eza htop jq tmux tree wget starship 2>/dev/null || true
+brew install neovim git gh fzf ripgrep fd bat eza htop jq tmux tree wget starship tree-sitter-cli 2>/dev/null || true
 brew install --cask font-fira-code-nerd-font 2>/dev/null || true
 ok "Brew tools ready"
 
