@@ -67,6 +67,15 @@ symlink "$DOTFILES/zsh/.zshrc"       "$HOME/.zshrc"
 symlink "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
 symlink "$DOTFILES/tmux/.tmux.conf"  "$HOME/.tmux.conf"
 
+step "Machine-local config"
+if [ -e "$HOME/.zshrc.local" ]; then
+  ok "~/.zshrc.local already exists, leaving it alone"
+else
+  cp "$DOTFILES/zsh/zshrc.local.example" "$HOME/.zshrc.local"
+  ok "Created ~/.zshrc.local from template"
+  warn "Fill in host-specific paths there (it starts out as a no-op)"
+fi
+
 step "Done!"
 echo ""
 echo "Next steps:"

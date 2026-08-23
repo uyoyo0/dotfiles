@@ -11,6 +11,7 @@ Personal terminal setup. Tokyo Night color scheme throughout.
 | `starship/starship.toml` | Starship prompt (Tokyo Night colors, git status, lang versions) |
 | `tmux/.tmux.conf` | Prefix Ctrl+a, Tokyo Night status bar, vim pane nav |
 | `iterm2/TokyoNight.itermcolors` | iTerm2 color preset |
+| `zsh/zshrc.local.example` | Template for machine-specific shell config |
 | `TOOLS.md` | Cheatsheet for all CLI tools - run `cheat` to open |
 
 ## Setup on a new machine
@@ -22,7 +23,16 @@ cd ~/dotfiles && bash install.sh
 
 The script installs all brew tools, oh-my-zsh, zsh plugins, Starship, and creates symlinks.
 
-## Manual steps (one-time)
+## Machine-specific config
+
+```bash
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+```
+
+`install.sh` creates `~/.zshrc.local` from `zsh/zshrc.local.example` if it
+does not already exist, and never overwrites it after that.
+
+## Manual steps
 
 **iTerm2 colors**
 Preferences -> Profiles -> Colors -> Color Presets -> Import -> `iterm2/TokyoNight.itermcolors`

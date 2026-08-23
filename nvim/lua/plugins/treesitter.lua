@@ -1,5 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  -- The v1.0 API (`require("nvim-treesitter").install`) only exists on `main`.
+  branch = "main",
   lazy = false,
   build = ":TSUpdate",
   config = function()

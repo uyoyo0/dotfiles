@@ -11,8 +11,8 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# Resolve dotfiles location by following the ~/.zshrc symlink
-export DOTFILES="$(dirname "$(dirname "$(readlink ~/.zshrc)")")"
+# Resolve the dotfiles root from this file's own path
+export DOTFILES="${${(%):-%x}:A:h:h}"
 
 # Starship prompt
 eval "$(starship init zsh)"
@@ -30,6 +30,10 @@ alias find="fd"
 alias vim="nvim"
 alias vi="nvim"
 alias cheat="bat $DOTFILES/TOOLS.md"
+alias reload="exec zsh"
+
+# --- Helpers ---
+home() { cd ~; }
 
 # --- FZF settings (Tokyo Night) ---
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git"
@@ -53,3 +57,6 @@ export VISUAL="nvim"
 
 # --- PATH additions ---
 export PATH="$HOME/.local/bin:$PATH"
+
+# --- Machine-local overrides ---
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

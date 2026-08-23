@@ -3,6 +3,11 @@ local map = vim.keymap.set
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Don't clobber the yank register on deletes/changes
+map({ "n", "x" }, "d", '"_d')
+map({ "n", "x" }, "c", '"_c')
+map("n", "x", '"_x')
+
 -- File operations
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
