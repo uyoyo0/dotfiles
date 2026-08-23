@@ -1,0 +1,23 @@
+# Template for ~/.zshrc.local, machine-specific shell config.
+#
+# Keep anything host-specific here (external volumes, toolchain prefixes,
+# machine-only PATH entries, personal shortcuts) 
+
+# --- Homebrew, if it lives somewhere non-default ---
+# if [ -x /opt/homebrew/bin/brew ]; then
+#   eval "$(/opt/homebrew/bin/brew shellenv)"
+#   export HOMEBREW_TEMP=/opt/homebrew/tmp
+#   export HOMEBREW_CACHE="$HOME/Library/Caches/Homebrew"
+# fi
+
+# --- Language toolchains ---
+# export GHCUP_INSTALL_BASE_PREFIX="/path/to/volume"
+# export PATH="$GHCUP_INSTALL_BASE_PREFIX/.ghcup/bin:$PATH"
+
+# --- Extra PATH entries ---
+# typeset -U path PATH
+# path=("/some/machine/specific/bin" $path)
+# export PATH
+
+# --- Per-machine hooks ---
+# [ -x "/path/to/some/script" ] && "/path/to/some/script"

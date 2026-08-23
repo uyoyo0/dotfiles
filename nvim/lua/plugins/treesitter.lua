@@ -6,14 +6,18 @@ return {
   build = ":TSUpdate",
   config = function()
     require("nvim-treesitter").install({
-      "bash", "json", "lua", "markdown", "markdown_inline",
+      "bash", "c", "cpp", "json", "lua", "markdown", "markdown_inline",
       "python", "regex", "toml", "vim", "vimdoc", "yaml",
     })
 
     vim.api.nvim_create_autocmd("FileType", {
-      callback = function()
+      callback = function(ev)
         pcall(vim.treesitter.start)
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+        local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
+        if vim.treesitter.query.get(lang, "indents") then
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
       end,
     })
   end,
