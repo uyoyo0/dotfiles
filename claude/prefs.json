@@ -1,0 +1,9 @@
+{
+  "permissions": { "defaultMode": "auto" },
+  "model": "opus",
+  "enabledPlugins": { "clangd-lsp@claude-plugins-official": true },
+  "tui": "fullscreen",
+  "theme": "dark",
+  "inputNeededNotifEnabled": false,
+  "agentPushNotifEnabled": true
+}

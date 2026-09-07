@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(//Volumes/*/private/**)",
+      "Edit(//Volumes/*/private/**)",
+      "Read(//Volumes/*/private)"
+    ],
+    "ask": [
+      "Read(//Volumes/*/clients/**)",
+      "Edit(//Volumes/*/clients/**)"
+    ]
+  },
+  "sandbox": {
+    "filesystem": {
+      "denyRead": [
+        "/Volumes/YourSSD/private"
+      ],
+      "denyWrite": [
+        "/Volumes/YourSSD/private"
+      ]
+    }
+  }
+}

@@ -68,3 +68,31 @@ gh auth login
 | `<leader>fr` | Recent files |
 | `<leader>w` | Save |
 | `<leader>q` | Quit |
+
+## Claude Code
+
+Settings are split
+
+| File | Tracked | Purpose |
+|---|---|---|
+| `claude/policy.json` | yes | Security rules applied on every machine |
+| `claude/prefs.json` | yes | Theme, model, UI. Seeds a fresh machine only |
+| `claude/policy.local.example.json` | yes | Template, lax machine |
+| `claude/policy.strict.example.json` | yes | Template, sensitive machine |
+| `~/.claude/policy.local.json` | no | This machine's own rules. Keep private paths here |
+
+Apply with `scripts/apply-claude-policy.sh` (idempotent). Shared and local
+arrays are unioned; the result replaces the arrays in `~/.claude/settings.json`,
+so deleting a local rule removes it again. Preferences are never overwritten
+after the first install.
+
+Blacklisting a folder:
+
+- `deny` blocks it outright, regardless of where the session was started.
+- `ask` prompts every time, including in auto mode. Use this for folders you
+  want reachable only when you say so.
+- `sandbox.filesystem.denyRead` is the only layer enforced by the OS rather
+  than the harness, and it requires `"sandbox": {"enabled": true}`.
+
+A pre-commit hook (`githooks/pre-commit`, enabled via `core.hooksPath`) scans
+staged `claude/*.json` for credential material. Bypass with `--no-verify`.

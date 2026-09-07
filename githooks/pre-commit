@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Block commits that put credential material into tracked Claude settings.
+# Enabled by: git config core.hooksPath githooks
+set -uo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+CHECK="$REPO_ROOT/scripts/check-claude-settings.sh"
+if [ ! -f "$CHECK" ]; then
+  echo "pre-commit: $CHECK is missing, cannot scan for secrets" >&2
+  exit 1
+fi
+
+status=0
+# Scan the STAGED content, not the working tree, so editing after `git add`
+# cannot sneak a secret past the hook.
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  if ! git show ":$file" | bash "$CHECK" - ; then
+    echo "  (in staged $file)" >&2
+    status=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACM | grep -E '(^|/)(settings|settings\.local)\.json$|^claude/.*\.json$' || true)
+
+if [ "$status" -ne 0 ]; then
+  echo >&2
+  echo "Fix the file, or bypass with: git commit --no-verify" >&2
+fi
+exit $status

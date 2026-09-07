@@ -20,9 +20,21 @@ fi
 ok "Homebrew found"
 
 step "Installing brew tools"
-brew install neovim git gh fzf ripgrep fd bat eza htop jq tmux tree wget starship tree-sitter-cli 2>/dev/null || true
-brew install --cask font-fira-code-nerd-font 2>/dev/null || true
-ok "Brew tools ready"
+BREW_PKGS="neovim git gh fzf ripgrep fd bat eza htop jq tmux tree wget starship tree-sitter-cli"
+if ! brew install $BREW_PKGS; then
+  warn "One or more brew formulae failed to install"
+fi
+brew install --cask font-fira-code-nerd-font || warn "Nerd Font cask failed to install"
+MISSING=""
+for t in $BREW_PKGS; do
+  case "$t" in neovim) b=nvim ;; tree-sitter-cli) b=tree-sitter ;; *) b="$t" ;; esac
+  command -v "$b" >/dev/null 2>&1 || MISSING="$MISSING $b"
+done
+if [ -n "$MISSING" ]; then
+  warn "Not on PATH after install:$MISSING"
+else
+  ok "Brew tools ready"
+fi
 
 step "Installing oh-my-zsh"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
@@ -52,11 +64,14 @@ fi
 step "Creating symlinks"
 mkdir -p "$HOME/.config"
 
+# -n stops ln from following an existing symlink-to-directory and creating
+# the new link *inside* it. Without it, a second run makes $src/$(basename $dst).
 symlink() {
   local src="$1" dst="$2"
   if [ -e "$dst" ] && [ ! -L "$dst" ]; then
-    warn "Backing up existing $dst -> $dst.bak"
-    mv "$dst" "$dst.bak"
+    local bak="$dst.bak.$(date +%Y%m%d%H%M%S)"
+    warn "Backing up existing $dst -> $bak"
+    mv "$dst" "$bak"
   fi
   ln -sfn "$src" "$dst"
   ok "$dst -> $src"
@@ -74,6 +89,36 @@ else
   cp "$DOTFILES/zsh/zshrc.local.example" "$HOME/.zshrc.local"
   ok "Created ~/.zshrc.local from template"
   warn "Fill in host-specific paths there (it starts out as a no-op)"
+fi
+
+step "Git hooks"
+# Filesystems without POSIX permissions (ExFAT/FAT) drop the exec bit, which
+# would make git silently skip the hook. Restore it, and never rely on it below.
+chmod +x "$DOTFILES"/scripts/*.sh "$DOTFILES"/githooks/* 2>/dev/null || true
+if [ -d "$DOTFILES/githooks" ]; then
+  git -C "$DOTFILES" config core.hooksPath githooks
+  ok "pre-commit secret scan enabled"
+else
+  warn "No githooks/ directory, skipping"
+fi
+
+step "Claude Code settings"
+APPLY="$DOTFILES/scripts/apply-claude-policy.sh"
+if ! command -v jq >/dev/null 2>&1; then warn "jq missing, Claude policy cannot be applied"; fi
+if [ ! -f "$APPLY" ]; then
+  warn "No scripts/apply-claude-policy.sh, skipping"
+elif ! { : < /dev/tty; } 2>/dev/null; then
+  warn "No terminal available, skipping Claude policy"
+  ok "Run scripts/apply-claude-policy.sh by hand to apply it"
+else
+  # Read from /dev/tty, not stdin, so the prompt still works when the script
+  # is piped (curl ... | bash), where stdin is the script text itself.
+  reply=""
+  read -r -p "Apply Claude Code policy to ~/.claude/settings.json? [y/N] " reply < /dev/tty || true
+  case "$reply" in
+    [Yy]*) bash "$APPLY" ;;
+    *) ok "Skipped Claude policy" ;;
+  esac
 fi
 
 step "Done!"

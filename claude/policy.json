@@ -1,0 +1,69 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(cat ~/.ssh/*)",
+      "Bash(security find-generic-password *)",
+      "Bash(security find-internet-password *)",
+      "Edit(**/*.p12)",
+      "Edit(**/*.pem)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/id_ed25519)",
+      "Edit(**/id_rsa)",
+      "Edit(~/.aws/**)",
+      "Edit(~/.config/gh/**)",
+      "Edit(~/.docker/config.json)",
+      "Edit(~/.gnupg/**)",
+      "Edit(~/.netrc)",
+      "Edit(~/.npmrc)",
+      "Edit(~/.pypirc)",
+      "Edit(~/.ssh/**)",
+      "Edit(~/Library/Keychains/**)",
+      "Read(**/*.p12)",
+      "Read(**/*.pem)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/id_ed25519)",
+      "Read(**/id_rsa)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.netrc)",
+      "Read(~/.npmrc)",
+      "Read(~/.pypirc)",
+      "Read(~/.ssh/**)",
+      "Read(~/Library/Keychains/**)"
+    ],
+    "ask": []
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "sandbox": {
+    "filesystem": {
+      "denyRead": [
+        "~/.ssh",
+        "~/.aws",
+        "~/.gnupg",
+        "~/.config/gh",
+        "~/.netrc",
+        "~/Library/Keychains"
+      ],
+      "allowRead": [
+        "~/.ssh/known_hosts",
+        "~/.ssh/config"
+      ],
+      "denyWrite": [
+        "~/.ssh",
+        "~/.aws",
+        "~/.gnupg",
+        "~/.config/gh",
+        "~/.netrc",
+        "~/Library/Keychains"
+      ]
+    }
+  }
+}

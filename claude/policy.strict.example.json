@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(//Volumes/*/private/**)",
+      "Edit(//Volumes/*/private/**)",
+      "Read(//Volumes/*/private)"
+    ],
+    "ask": [
+      "Read(//Volumes/*/clients/**)",
+      "Edit(//Volumes/*/clients/**)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "*.githubusercontent.com",
+        "api.github.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "formulae.brew.sh",
+        "ghcr.io",
+        "crates.io",
+        "static.crates.io",
+        "proxy.golang.org"
+      ]
+    },
+    "filesystem": {
+      "denyRead": [
+        "/Volumes/YourSSD/private"
+      ],
+      "denyWrite": [
+        "/Volumes/YourSSD/private"
+      ]
+    }
+  },
+  "dialogExpiry": "never",
+  "inputNeededNotifEnabled": true
+}
