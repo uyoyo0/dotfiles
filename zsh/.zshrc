@@ -65,7 +65,11 @@ export PATH="$HOME/.local/bin:$PATH"
 CLAUDE_BG_IMAGE="$HOME/.claude/claude-bg.png"
 claude() {
   if [[ "$TERM_PROGRAM" == "iTerm.app" && -f "$CLAUDE_BG_IMAGE" ]]; then
-    printf '\e]1337;SetBackgroundImageFile=%s\a' "$(printf '%s' "$CLAUDE_BG_IMAGE" | base64)"
+    local bg_seq
+    bg_seq="$(printf '\e]1337;SetBackgroundImageFile=%s\a' "$(printf '%s' "$CLAUDE_BG_IMAGE" | base64)")"
+    printf '%s' "$bg_seq"
+    # iTerm's Claude Code workgroup enter trigger wipes the image once claude starts, so set it again after
+    ( sleep 1; printf '%s' "$bg_seq" > /dev/tty ) &!
     # `always` runs even if claude exits via SIGINT, which would otherwise abort the function
     {
       command claude "$@"
