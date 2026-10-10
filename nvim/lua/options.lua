@@ -11,6 +11,8 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = false
 opt.termguicolors = true
+-- Color the cursor from the colorscheme's Cursor group (keeps it visible in light mode)
+opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor,t:block-blinkon500-blinkoff500-TermCursor"
 opt.splitright = true
 opt.splitbelow = true
 opt.scrolloff = 8

@@ -68,6 +68,7 @@ gh auth login
 | `<leader>fr` | Recent files |
 | `<leader>w` | Save |
 | `<leader>q` | Quit |
+| `<leader>ut` | Toggle light/dark theme (`:ToggleTheme`) |
 
 ## Claude Code
 

@@ -214,6 +214,11 @@ nvim .                   # open current directory
 | `Alt+j/k` | Move line/selection up/down |
 | `> / <` (visual) | Indent (stays in visual) |
 
+**UI**
+| Key | Action |
+|-----|--------|
+| `<leader>ut` | Toggle light/dark theme (`:ToggleTheme`) |
+
 **Plugin management**
 ```
 :Lazy          # open plugin manager
