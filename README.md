@@ -96,3 +96,11 @@ Blacklisting a folder:
 
 A pre-commit hook (`githooks/pre-commit`, enabled via `core.hooksPath`) scans
 staged `claude/*.json` for credential material. Bypass with `--no-verify`.
+
+### Background image (optional)
+
+In iTerm2, `claude` shows a background image while it runs and clears it on
+exit. To turn it on, save an image to `~/.claude/claude-bg.png` (not tracked).
+Without that file, `claude` runs normally. iTerm2 asks permission the first
+time an image is set. To fade the image so text stays readable, use the
+Blending slider in Preferences -> Profiles -> Window -> Background Image.

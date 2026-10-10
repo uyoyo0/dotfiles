@@ -60,3 +60,21 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # --- Machine-local overrides ---
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+
+# iTerm2: show a background image while Claude Code is running
+CLAUDE_BG_IMAGE="$HOME/.claude/claude-bg.png"
+claude() {
+  if [[ "$TERM_PROGRAM" == "iTerm.app" && -f "$CLAUDE_BG_IMAGE" ]]; then
+    printf '\e]1337;SetBackgroundImageFile=%s\a' "$(printf '%s' "$CLAUDE_BG_IMAGE" | base64)"
+    # `always` runs even if claude exits via SIGINT, which would otherwise abort the function
+    {
+      command claude "$@"
+    } always {
+      printf '\e]1337;SetBackgroundImageFile=\a'
+      # iTerm's Claude Code workgroup exit trigger can re-apply the image after we clear it, so clear again shortly after
+      ( sleep 0.5; printf '\e]1337;SetBackgroundImageFile=\a' > /dev/tty ) &!
+    }
+    return
+  fi
+  command claude "$@"
+}
